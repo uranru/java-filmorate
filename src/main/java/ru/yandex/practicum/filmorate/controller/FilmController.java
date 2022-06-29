@@ -14,26 +14,26 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("films")
 public class FilmController {
     private Long i = 0L;
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final Map<Long,Film> listFilms = new HashMap<>();
 
-    @GetMapping("/films")
+    @GetMapping("")
     public Map<Long,Film> findAllFilms() {
         log.debug("Текущее количество фильмов: {}",listFilms.size());
         return listFilms;
     }
 
-    @GetMapping("/film/{id}")
+    @GetMapping("/{id}")
     public Film findFilm(@PathVariable Long id) {
         Film film = listFilms.get(id);
         log.debug("Запрошен фильм: {}",film);
         return film;
     }
 
-    @PostMapping(value = "/film")
+    @PostMapping(value = "")
     public Film createFilm(@Valid @RequestBody Film newFilm) {
         Long id = generateId();
         newFilm.setId(id);
@@ -42,7 +42,7 @@ public class FilmController {
         return newFilm;
     }
 
-    @PutMapping(value = "/film/{id}")
+    @PutMapping(value = "/{id}")
     public Film updateFilm(@PathVariable Long id, @Valid @RequestBody Film film) {
         film.setId(id);
         listFilms.put(id,film);

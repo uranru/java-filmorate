@@ -18,26 +18,26 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("users")
 public class UserController {
     private Long i = 0L;
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final Map<Long, User> listUsers = new HashMap();
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "")
     public Map<Long, User> findAll() {
         log.info("Текущее количество пользователей: {}",listUsers.size());
         return listUsers;
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public User findUser(@PathVariable Long id) {
         User user = listUsers.get(id);
         log.debug("Запрошен пользователь: {}",user);
         return user;
     }
 
-    @PostMapping(value = "/user")
+    @PostMapping(value = "")
     public User createUser(@Valid @RequestBody User newUser) {
         Long id = generateId();
         newUser.setId(id);
@@ -49,7 +49,7 @@ public class UserController {
         return newUser;
     }
 
-    @PutMapping(value = "/user/{id}")
+    @PutMapping(value = "/{id}")
     public User updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         user.setId(id);
         listUsers.put(id,user);
