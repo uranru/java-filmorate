@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.controller;
 import org.hibernate.validator.internal.util.privilegedactions.NewInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -25,9 +27,10 @@ public class UserController {
     private final Map<Long, User> listUsers = new HashMap();
 
     @GetMapping(value = "")
-    public Map<Long, User> findAll() {
+    public List<User> findAll() {
         log.info("Текущее количество пользователей: {}",listUsers.size());
-        return listUsers;
+        List<User> listView = new ArrayList<>();
+        return viewList();
     }
 
     @GetMapping("/{id}")
@@ -41,7 +44,7 @@ public class UserController {
     public User createUser(@Valid @RequestBody User newUser) {
         Long id = generateId();
         newUser.setId(id);
-        if (newUser.getName() == null) {
+        if (newUser.getName() == null || newUser.getName().isEmpty()) {
             newUser.setName(newUser.getLogin());
         }
         listUsers.put(id,newUser);
@@ -49,12 +52,25 @@ public class UserController {
         return newUser;
     }
 
-    @PutMapping(value = "/{id}")
-    public User updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
-        user.setId(id);
-        listUsers.put(id,user);
-        log.info("Обновлен пользователь: {}",user);
-        return user;
+    @PutMapping(value = "")
+    public User updateUser(@Valid @RequestBody User user) {
+        Long id = user.getId();
+        if (listUsers.containsKey(id)) {
+            listUsers.put(id,user);
+            log.info("Обновлен пользователь: {}",user);
+            return user;
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "user Not Found");
+        }
+
+    }
+    public List<User> viewList() {
+        List<User> listView = new ArrayList<>();
+        for (User user : listUsers.values()) {
+            listView.add(user);
+        }
+        return listView;
     }
 
     private Long generateId(){

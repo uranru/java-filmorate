@@ -2,10 +2,11 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
+
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class FilmController {
     private final Map<Long,Film> listFilms = new HashMap<>();
 
     @GetMapping("")
-    public Map<Long,Film> findAllFilms() {
+    public List<Film> findAllFilms() {
         log.debug("Текущее количество фильмов: {}",listFilms.size());
-        return listFilms;
+        return viewList();
     }
 
     @GetMapping("/{id}")
@@ -42,14 +43,26 @@ public class FilmController {
         return newFilm;
     }
 
-    @PutMapping(value = "/{id}")
-    public Film updateFilm(@PathVariable Long id, @Valid @RequestBody Film film) {
-        film.setId(id);
-        listFilms.put(id,film);
-        log.info("Обновлен фильм: {}",film);
-        return film;
+    @PutMapping(value = "")
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        Long id = film.getId();
+        if (listFilms.containsKey(id)) {
+            listFilms.put(id,film);
+            log.info("Обновлен фильм: {}",film);
+            return film;
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "film Not Found");
+        }
     }
 
+    public List<Film> viewList() {
+        List<Film> listView = new ArrayList<>();
+        for (Film film : listFilms.values()) {
+            listView.add(film);
+        }
+        return listView;
+    }
     private Long generateId(){
         i ++;
         return i;
