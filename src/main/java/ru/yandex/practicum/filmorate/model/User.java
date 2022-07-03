@@ -1,8 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.validator.Login;
 
@@ -13,7 +15,8 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 @Validated
-@Data
+@Getter
+@Setter
 public class User {
     private Long id;
 

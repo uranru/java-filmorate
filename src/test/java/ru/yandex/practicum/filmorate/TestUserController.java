@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUserController {
-
+/*
     @Test
     public void testGetUsers() throws IOException, InterruptedException{
         String myUri = "http://localhost:8080/users";
@@ -101,5 +101,5 @@ public class TestUserController {
 
         assertEquals(200, response02.statusCode(), "Не проходит запрос на обновление пользователя");
     }
-
+*/
 }

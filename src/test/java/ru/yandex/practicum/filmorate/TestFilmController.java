@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import ru.yandex.practicum.filmorate.controller.UserController;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,8 +12,9 @@ import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestFilmController {
 
+public class TestFilmController {
+/*
     @Test
     public void testGetFilms() throws IOException, InterruptedException{
         String myUri = "http://localhost:8080/films";
@@ -97,5 +100,5 @@ public class TestFilmController {
 
         assertEquals(200, response02.statusCode(), "Не проходит запрос на обновление фильма");
     }
-
+*/
 }

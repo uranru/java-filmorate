@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.validator.ReleaseDate;
 
@@ -11,7 +13,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Validated
-@Data
+@Getter @Setter
 public class Film {
     private Long id;
     @NotEmpty(message = "name is not correct")
