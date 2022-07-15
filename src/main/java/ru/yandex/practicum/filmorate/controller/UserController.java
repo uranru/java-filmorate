@@ -56,5 +56,4 @@ public class UserController extends UniversalController<User> {
         log.debug("Запрошен список общих друзей пользователей c ID {} и ID {}",friendId,id);
         return listUser;
     }
-
 }
