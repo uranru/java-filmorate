@@ -18,14 +18,42 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 @Qualifier("users")
-public class UserController extends UniversalController<User> {
+public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService service;
 
-
+    @Autowired
     public UserController(UserService service) {
-        super(service);
         this.service = service;
+    }
+
+    @GetMapping("")
+    public List<User> findAllObjects() {
+        List<User> allObjects = service.findAllObjects();
+        log.info("Запрошен список всех объектов. Текущее количество объектов: {}",allObjects.size());
+        return allObjects;
+    }
+
+    @GetMapping("/{id}")
+    public User findObject(@PathVariable Long id) {
+        User object = (User) service.findObject(id);
+        log.info("Запрошен объект: {}",object);
+        return object;
+    }
+
+    @PostMapping(value = "")
+    public User createObject(@Valid @RequestBody User object) {
+        service.createObject(object);
+        log.info("Добавлен новый объект: {}",object);
+        return object;
+    }
+
+    @PutMapping(value = "")
+    public User updateObject(@Valid @RequestBody User object) {
+        service.updateObject(object);
+        log.info("Изменен объект: {}",object);
+        return object;
+
     }
 
     @PutMapping("/{id}/friends/{friendId}")

@@ -16,13 +16,28 @@ import java.util.Set;
 
 @Service
 @Qualifier("users")
-public class UserService extends UniversalService{
+public class UserService implements UniversalServiceInterface{
     private final InMemoryUserStorage storage;
 
     @Autowired
     public UserService(InMemoryUserStorage storage) {
-        super(storage);
         this.storage = storage;
+    }
+
+    public List<User> findAllObjects() {
+        return storage.findAllObjects();
+    }
+
+    public Object findObject(Long id) {
+        return storage.findObject(id);
+    }
+
+    public void createObject(User object) {
+        storage.createObject(object);
+    }
+
+    public void updateObject(User object) {
+        storage.updateObject(object);
     }
 
     public void addFriend(Long id, Long friendId){
@@ -51,7 +66,7 @@ public class UserService extends UniversalService{
             friend.setListFriends(friendListFriends);
         } catch (NullPointerException e) {
             throw new ResponseStatusException(
-            HttpStatus.resolve(404), "User not Found");
+                    HttpStatus.resolve(404), "User not Found");
         }
     }
 

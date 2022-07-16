@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-import ru.yandex.practicum.filmorate.controller.UniversalController;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public abstract class InMemoryUniversalStorage<Object> implements UniversalStorage<Object> {
     private Long i = 0L;
-    private static final Logger log = LoggerFactory.getLogger(UniversalController.class);
+    private static final Logger log = LoggerFactory.getLogger(UniversalStorage.class);
     protected final Map<Long,Object> listObjects = new HashMap<>();
 
     @Override
@@ -53,7 +53,7 @@ public abstract class InMemoryUniversalStorage<Object> implements UniversalStora
             return object;
         } else {
             throw new ResponseStatusException(
-                    HttpStatus.resolve(404), "User not Found");
+                    HttpStatus.resolve(404), "Object not Found");
         }
     }
 

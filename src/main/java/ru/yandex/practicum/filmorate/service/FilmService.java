@@ -14,16 +14,25 @@ import java.util.*;
 
 @Service
 @Qualifier("films")
-public class FilmService extends UniversalService{
+public class FilmService implements UniversalServiceInterface{
     private final InMemoryFilmStorage filmStorage;
     private final InMemoryUserStorage userStorage;
 
     @Autowired
     public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
-        super(filmStorage);
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
+
+    public List<Film> findAllObjects() {
+        return filmStorage.findAllObjects();
+    }
+
+    public Film findObject(Long id) { return (Film) filmStorage.findObject(id); }
+
+    public void createObject(Film object) { filmStorage.createObject(object); }
+
+    public void updateObject(Film object) { filmStorage.updateObject(object); }
 
     public void addLike(Long filmId, Long userId){
         User user = userStorage.findObject(userId);

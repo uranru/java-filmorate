@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUniversalStorage;
 
@@ -23,14 +22,41 @@ import java.util.List;
 @RestController
 @RequestMapping("films")
 @Qualifier("films")
-public class FilmController extends UniversalController<Film> {
+public class FilmController {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final FilmService service;
 
     @Autowired
     public FilmController(FilmService service) {
-        super(service);
         this.service = service;
+    }
+
+    @GetMapping("")
+    public List<Film> findAllObjects() {
+        List<Film> allObjects = service.findAllObjects();
+        log.info("Запрошен список всех объектов. Текущее количество объектов: {}",allObjects.size());
+        return allObjects;
+    }
+
+    @GetMapping("/{id}")
+    public Film findObject(@PathVariable Long id) {
+        Film object = (Film) service.findObject(id);
+        log.info("Запрошен объект: {}",object);
+        return object;
+    }
+
+    @PostMapping(value = "")
+    public Film createObject(@Valid @RequestBody Film object) {
+        service.createObject(object);
+        log.info("Добавлен новый объект: {}",object);
+        return object;
+    }
+
+    @PutMapping(value = "")
+    public Film updateObject(@Valid @RequestBody Film object) {
+        service.updateObject(object);
+        log.info("Изменен объект: {}",object);
+        return object;
     }
 
     @PutMapping("/{id}/like/{userId}")
